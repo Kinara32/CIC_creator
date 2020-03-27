@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PGC_ATAN.iml" filepath="$PROJECT_DIR$/.idea/PGC_ATAN.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CICPY.iml" filepath="$PROJECT_DIR$/.idea/CICPY.iml" />
     </modules>
   </component>
 </project>
