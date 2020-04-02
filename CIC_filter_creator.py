@@ -1,10 +1,10 @@
 ###########################################################################################################
-# NUM_STAGE = 6  # 6
-# R_DECIM = 200  # 200
-# N_bit_in = 32  # 32
-# N_bit_out = 32  # 32
+NUM_STAGE = 6  # 6
+R_DECIM = 200  # 200
+N_bit_in = 64  # 32
+N_bit_out = 64  # 32
 M_DELAY = 2
-N_sensors = 3
+N_sensors = 48
 Hogenauer_pruning = True
 
 # NUM_STAGE = 3  # 6
@@ -12,10 +12,10 @@ Hogenauer_pruning = True
 # N_bit_in = 8  # 32
 # N_bit_out = 10  # 32
 #
-NUM_STAGE = 6  # 6
-R_DECIM = 200  # 200
-N_bit_in = 64  # 32
-N_bit_out = 64  # 32
+# NUM_STAGE = 6  # 6
+# R_DECIM = 200  # 200
+# N_bit_in = 64  # 32
+# N_bit_out = 64  # 32
 
 ##########################################################################################################
 const_dict = {'N_bit_in': str(N_bit_in), 'N_bit_out': str(N_bit_out), 'N_sensors': str(N_sensors),

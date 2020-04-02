@@ -9,25 +9,25 @@ z2
 cModel Technology
 Z0 dC:/Dropbox/Python/Pycharm/PGC_ATAN
 Ecic_custom_testbench
-Z1 w1585320391
+Z1 w1585843890
 Z2 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
 Z3 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
 Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z5 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
 R0
-Z6 8C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog.vht
-Z7 FC:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog.vht
+Z6 8C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog_64.vht
+Z7 FC:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog_64.vht
 l0
 L10
 VTl0M^Qido=1fZ5JXYe^TN2
 !s100 4<UO4bSNI?olnPKb:;2810
 Z8 OV;C;10.4d;61
 32
-Z9 !s110 1585320904
+Z9 !s110 1585843899
 !i10b 1
-Z10 !s108 1585320904.000000
-Z11 !s90 -reportprogress|300|-work|work|C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog.vht|
-Z12 !s107 C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog.vht|
+Z10 !s108 1585843899.000000
+Z11 !s90 -reportprogress|300|-work|work|C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog_64.vht|
+Z12 !s107 C:/Dropbox/Python/Pycharm/PGC_ATAN/CIC_custom_testbench_pipline_hog_64.vht|
 !i113 1
 Z13 o-work work
 Z14 tExplicit 1
@@ -39,8 +39,8 @@ R5
 DEx4 work 20 cic_custom_testbench 0 22 Tl0M^Qido=1fZ5JXYe^TN2
 l47
 L13
-VJ:O@Tok?_eQUz7GB]JZRz1
-!s100 keQ86c`FHK7ml4<Ri^k^B2
+VmeJf54Rd3=hISBOcOX8a93
+!s100 cTm2E@FdSRkV61m?zFkMM0
 R8
 32
 R9
@@ -52,24 +52,24 @@ R12
 R13
 R14
 Ecicpy_decim
-Z15 w1585322426
+Z15 w1585843547
 R3
 R4
 R5
 R0
-Z16 8C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_32_out_32.vhd
-Z17 FC:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_32_out_32.vhd
+Z16 8C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_64_out_64.vhd
+Z17 FC:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_64_out_64.vhd
 l0
 L15
-V`Kka`5JWd[0KWJ@0g3eGK1
-!s100 h5DiZlRBCInASRCV_cC8X2
+Vj<cB9:AKmC6PNdffd6MD71
+!s100 hh2R;AYEIC;?7hP6Pe[T41
 R8
 32
-Z18 !s110 1585322470
+Z18 !s110 1585843773
 !i10b 1
-Z19 !s108 1585322470.000000
-Z20 !s90 -reportprogress|300|-work|work|C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_32_out_32.vhd|
-Z21 !s107 C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_32_out_32.vhd|
+Z19 !s108 1585843773.000000
+Z20 !s90 -reportprogress|300|-work|work|C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_64_out_64.vhd|
+Z21 !s107 C:/Dropbox/Python/Pycharm/PGC_ATAN/cic_dec_st_6_R_200_sen_3_in_64_out_64.vhd|
 !i113 1
 R13
 R14
@@ -77,11 +77,11 @@ Abehavior
 R3
 R4
 R5
-Z22 DEx4 work 11 cicpy_decim 0 22 `Kka`5JWd[0KWJ@0g3eGK1
-l75
+DEx4 work 11 cicpy_decim 0 22 j<cB9:AKmC6PNdffd6MD71
+l87
 L32
-Z23 VX9AM=:9e__P0dak`S0`?G3
-Z24 !s100 Ib29JAoV0>3_ORj4V9hz=3
+ViIP?9VhoKUQZN>Dj89U6m1
+!s100 fkTefBP7D_X=j;OKc42613
 R8
 32
 R18
