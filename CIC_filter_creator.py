@@ -1,11 +1,23 @@
-NUM_STAGE = 6  # 6
-R_DECIM = 200  # 200
-N_bit_in = 32  # 32
-N_bit_out = 32  # 32
+###########################################################################################################
+# NUM_STAGE = 6  # 6
+# R_DECIM = 200  # 200
+# N_bit_in = 32  # 32
+# N_bit_out = 32  # 32
 M_DELAY = 2
 N_sensors = 3
 Hogenauer_pruning = True
 
+# NUM_STAGE = 3  # 6
+# R_DECIM = 32  # 200
+# N_bit_in = 8  # 32
+# N_bit_out = 10  # 32
+#
+NUM_STAGE = 6  # 6
+R_DECIM = 200  # 200
+N_bit_in = 64  # 32
+N_bit_out = 64  # 32
+
+##########################################################################################################
 const_dict = {'N_bit_in': str(N_bit_in), 'N_bit_out': str(N_bit_out), 'N_sensors': str(N_sensors),
               'R_DECIM': str(R_DECIM), 'NUM_STAGE': str(NUM_STAGE), 'Hogenauer_pruning': str(Hogenauer_pruning)}
 
@@ -23,32 +35,20 @@ io_dict = {'clk': '\t\t\t : in std_logic;\n',
            'out_sop': '\t\t : out std_logic;\n',
            'out_eop': '\t\t : out std_logic\n'}
 
-signal_dict = {'cnt': {'type': '\t\t\t\t: natural range 0 to ' + str(R_DECIM) + ' := ', 'value': '1'},
-               'cnt_delay': {'type': '\t\t: natural range 0 to ' + str(NUM_STAGE - 1) + '  := ', 'value': '0'},
+signal_dict = {'cnt\t\t\t': {'type': '\t: natural range 0 to ' + str(R_DECIM) + ' := ', 'value': '1'},
+               'cnt_delay\t': {'type': '\t: natural range 0 to ' + str(NUM_STAGE - 1) + '  := ', 'value': '0'},
                'sensor_number': {'type': '\t: natural range 0 to ' + str(N_sensors - 1) + ' := ', 'value': '0'},
                'channel_integ': {'type': '\t: natural range 0 to ' + str(N_sensors - 1) + ' := ', 'value': '0'},
                'channel_comb': {'type': '\t\t: natural range 0 to ' + str(N_sensors - 1) + ' := ', 'value': '0'},
-               'channel_out': {'type': '\t\t: natural range 0 to ' + str(N_sensors - 1) + ' := ', 'value': '0'},
-               'integ': {'type': '''\t\t\t: std_logic	:= ''', 'value': ''' '0' '''},
-               'strob': {'type': '''\t\t\t: std_logic	:= ''', 'value': ''' '0' '''},
-               'comb': {'type': '''\t\t\t\t: std_logic	:= ''', 'value': ''' '0' '''},
-               'output': {'type': '''\t\t\t: std_logic	:= ''', 'value': ''' '0' '''},
+               'channel_out\t': {'type': '\t: natural range 0 to ' + str(N_sensors - 1) + ' := ', 'value': '0'},
+               'integ\t\t': {'type': '''\t: std_logic	:= ''', 'value': ''' '0' '''},
+               'strob\t\t': {'type': '''\t: std_logic	:= ''', 'value': ''' '0' '''},
+               'comb\t\t': {'type': '''\t\t: std_logic	:= ''', 'value': ''' '0' '''},
+               'output\t\t': {'type': '''\t: std_logic	:= ''', 'value': ''' '0' '''},
                'data_valid_sop': {'type': '''\t: std_logic	:= ''', 'value': ''' '0' '''},
                'data_valid_eop': {'type': '''\t: std_logic	:= ''', 'value': ''' '0' '''},
-               'sensors_arr': {'type': '''\t\t: sensors_arr_type	:=''', 'value': ''' (others => (others => '0'))'''}}
-
-for j in range(NUM_STAGE):
-    signal_dict['integrator' + str(j)] = {'type': '''\t\t: sensors_arr_type	:=''',
-                                          'value': ''' (others => (others => '0'))'''}
-for j in range(NUM_STAGE):
-    signal_dict['c' + str(j) + 'delay1'] = {'type': '''\t\t: sensors_arr_type	:=''',
-                                            'value': ''' (others => (others => '0'))'''}
-for j in range(NUM_STAGE):
-    signal_dict['c' + str(j) + 'delay2'] = {'type': '''\t\t: sensors_arr_type	:=''',
-                                            'value': ''' (others => (others => '0'))'''}
-for j in range(NUM_STAGE + 1):
-    signal_dict['combin' + str(j)] = {'type': '''\t\t: sensors_arr_type	:=''',
-                                      'value': ''' (others => (others => '0'))'''}
+               'sensors_arr\t': {'type': '''\t: sensors_arr_type	:=''',
+                                 'value': ''' (others => (others => '0'))'''}}
 
 
 def binom(n, k):
@@ -66,7 +66,7 @@ def hogenauer():
     deviation = m.sqrt(variance)
 
     f = np.zeros(NUM_STAGE * 2)
-    b_discarded_high = np.zeros(NUM_STAGE * 2 + 1, dtype=np.int64)
+    bits_discarded_high = np.zeros(NUM_STAGE * 2 + 1, dtype=np.int64)
     f_binom = np.array([2, 6, 20, 70, 252, 924, 3432, 12870], dtype=np.float64)
 
     for i in range(1, NUM_STAGE + 1):
@@ -85,31 +85,57 @@ def hogenauer():
     bits_discarded_low = np.diff(bits_truncation)
     bits_discarded_low = np.insert(bits_discarded_low, 0, bits_truncation[0])
 
-    b_discarded_high[0] = bmax - bits_discarded_low[0]
+    bits_discarded_high[0] = bmax
     for i in range(2 * NUM_STAGE):
-        b_discarded_high[i + 1] = b_discarded_high[i] - bits_discarded_low[i]
+        bits_discarded_high[i + 1] = bits_discarded_high[i] - bits_discarded_low[i]
 
-    return list(b_discarded_high - 1), list(bits_discarded_low), bmax
+    return list(bits_discarded_high - 1), list(bits_discarded_low), bmax
 
 
 if Hogenauer_pruning:
-    B_discarded_high, Bits_discarded_low, Bmax = hogenauer()
-    type_dict = {'sensors_arr_type': '\t is array (0 to ' + str(N_sensors - 1) + ') of signed (' + str(
+    Bits_discarded_high, Bits_discarded_low, Bmax = hogenauer()
+
+    type_dict = {'sensors_arr_type': ' is array (0 to ' + str(N_sensors - 1) + ') of signed (' + str(
         Bmax - 1) + ' downto 0);\n'}
+
+    for j in range(len(Bits_discarded_high)):
+        type_dict['array_' + str(Bits_discarded_high[j] + 1) + '_type'] = '\t is array (0 to ' + str(
+            N_sensors - 1) + ') of signed (' + str(
+            Bits_discarded_high[j]) + ' downto 0);\n'
+
+    for j in range(NUM_STAGE):
+        signal_dict['integrator' + str(j) + '\t'] = {
+            'type': '\t: array_' + str(Bits_discarded_high[j + 1] + 1) + '_type	:=',
+            'value': ''' (others => (others => '0'))'''}
+    for j in range(NUM_STAGE):
+        signal_dict['c' + str(j) + 'delay1\t'] = {
+            'type': '\t\t: array_' + str(Bits_discarded_high[NUM_STAGE + j + 1] + 1) + '_type	:=',
+            'value': ''' (others => (others => '0'))'''}
+    for j in range(NUM_STAGE):
+        signal_dict['c' + str(j) + 'delay2\t'] = {
+            'type': '\t\t: array_' + str(Bits_discarded_high[NUM_STAGE + j + 1] + 1) + '_type	:=',
+            'value': ''' (others => (others => '0'))'''}
+    signal_dict['combin0\t\t'] = {
+        'type': '\t: array_' + str(Bits_discarded_high[NUM_STAGE + 1] + 1) + '_type	:=',
+        'value': ''' (others => (others => '0'))'''}
+    for j in range(1, NUM_STAGE + 1):
+        signal_dict['combin' + str(j) + '\t\t'] = {
+            'type': '\t: array_' + str(Bits_discarded_high[NUM_STAGE + j] + 1) + '_type	:=',
+            'value': ''' (others => (others => '0'))'''}
     integ_dict = {
         'integrator0(channel_integ)': {'value': '\t\t<= integrator0(channel_integ) + sensors_arr(channel_integ)',
-                                       'pruning': '(' + str(Bmax - 1) + ' downto ' + str(
+                                       'pruning': '(' + str(Bits_discarded_high[0]) + ' downto ' + str(
                                            Bits_discarded_low[0]) + ')'}}
     comb_dict = {'combin0(channel_comb)': {'value_comb': '\t\t<= integrator' + str(NUM_STAGE - 1) + '(channel_comb)',
                                            'value_delay': '',
-                                           'pruning': '(' + str(Bmax - 1) + ' downto ' + str(
+                                           'pruning': '(' + str(Bits_discarded_high[NUM_STAGE]) + ' downto ' + str(
                                                Bits_discarded_low[NUM_STAGE]) + ')'},
                  'combin1(channel_comb)': {'value_comb': '\t\t<= combin0(channel_comb)- c0delay2(channel_comb)',
                                            'value_delay': '',
                                            'pruning': ''}}
     delay1_dict = {'c' + str(j) + 'delay1(channel_comb)': {'value': '\t\t<= combin' + str(j) + '(channel_comb)',
                                                            'pruning': '(' + str(
-                                                               Bmax - 1) + ' downto ' + str(
+                                                               Bits_discarded_high[NUM_STAGE + j]) + ' downto ' + str(
                                                                Bits_discarded_low[NUM_STAGE + j]) + ')'} for j in
                    range(1, NUM_STAGE)}
     delay1_dict['c0delay1(channel_comb)'] = {'value': '\t\t<= combin0(channel_comb)',
@@ -122,15 +148,30 @@ if Hogenauer_pruning:
         integ_dict['integrator' + str(j) + '(channel_integ)'] = {'value': '\t\t<= integrator' + str(
             j) + '(channel_integ) + integrator' + str(j - 1) + '(channel_integ)',
                                                                  'pruning': '(' + str(
-                                                                     Bmax - 1) + ' downto ' + str(
+                                                                     Bits_discarded_high[j]) + ' downto ' + str(
                                                                      Bits_discarded_low[j]) + ')'}
     for j in range(1, NUM_STAGE):
         comb_dict['combin' + str(j + 1) + '(channel_comb)'] = {
             'value_comb': '\t\t<= combin' + str(j) + '(channel_comb)', 'value_delay': ' - c' + str(
                 j) + 'delay2(channel_comb)',
-            'pruning': '(' + str(Bmax - 1) + ' downto ' + str(
+            'pruning': '(' + str(Bits_discarded_high[NUM_STAGE + j]) + ' downto ' + str(
                 Bits_discarded_low[NUM_STAGE + j]) + ')'}
+
+
 else:
+    for j in range(NUM_STAGE):
+        signal_dict['integrator' + str(j)] = {'type': '''\t\t: sensors_arr_type	:=''',
+                                              'value': ''' (others => (others => '0'))'''}
+    for j in range(NUM_STAGE):
+        signal_dict['c' + str(j) + 'delay1'] = {'type': '''\t\t: sensors_arr_type	:=''',
+                                                'value': ''' (others => (others => '0'))'''}
+    for j in range(NUM_STAGE):
+        signal_dict['c' + str(j) + 'delay2'] = {'type': '''\t\t: sensors_arr_type	:=''',
+                                                'value': ''' (others => (others => '0'))'''}
+    for j in range(NUM_STAGE + 1):
+        signal_dict['combin' + str(j)] = {'type': '''\t\t: sensors_arr_type	:=''',
+                                          'value': ''' (others => (others => '0'))'''}
+
     type_dict = {'sensors_arr_type': '\t is array (0 to ' + str(N_sensors - 1) + ') of signed (' + str(
         N_bit_out - 1) + ' downto 0);\n'}
     integ_dict = {
@@ -206,7 +247,7 @@ def write_vhdl():
         file_vhdl.write('\n')
         for key in signal_dict:
             value = signal_dict[key]['value']
-            file_vhdl.write('\t\t\t' + key + '\t\t\t<=' + value + ';\n')
+            file_vhdl.write('\t\t\t' + key + '\t\t<=' + value + ';\n')
         file_vhdl.write('\n')
         file_vhdl.write('\t\telsif (rising_edge(clk)) then\n')
         file_vhdl.write('\n')
@@ -215,6 +256,7 @@ def write_vhdl():
         file_vhdl.write('''\t\t\t\tout_sop \t\t\t<= '0';\n''')
         file_vhdl.write('''\t\t\t\tout_eop \t\t\t<= '0';\n''')
         file_vhdl.write('\t\t\t\tdata_out \t\t\t<= std_logic_vector(resize(signed(data_in),' + str(N_bit_out) + '));\n')
+        file_vhdl.write('\n')
         for key in signal_dict:
             value = signal_dict[key]['value']
             file_vhdl.write('\t\t\t\t' + key + '\t\t<=' + value + ';\n')
@@ -304,6 +346,7 @@ def write_vhdl():
             value_delay = comb_dict[key]['value_delay']
             pruning = comb_dict[key]['pruning']
             file_vhdl.write('\t\t\t\t\t' + key + '\t\t' + value_comb + pruning + value_delay + ';\n')
+        file_vhdl.write('\n')
         file_vhdl.write('\t\t\t\t\tif channel_comb = ' + str(N_sensors - 1) + ' then\n')
         file_vhdl.write('\t\t\t\t\t\tchannel_comb 	\t<= 0;\n')
         file_vhdl.write('''\t\t\t\t\t\tcomb 	\t\t\t<= '0';\n''')
@@ -321,10 +364,10 @@ def write_vhdl():
         file_vhdl.write('''\t\t\t\t\tready \t\t\t\t\t<= '1';\n''')
         if Hogenauer_pruning:
             file_vhdl.write(
-                '\t\t\t\t\tdata_out \t\t\t\t<= std_logic_vector(resize(combin' + str(
+                '\t\t\t\t\tdata_out \t\t\t\t<= std_logic_vector(combin' + str(
                     NUM_STAGE) + '(channel_out)(' + str(
-                    Bmax - 1) + ' downto ' + str(
-                    Bits_discarded_low[2 * NUM_STAGE]) + '),' + str(N_bit_out) + '));\n')
+                    Bits_discarded_high[2 * NUM_STAGE]) + ' downto ' + str(
+                    Bits_discarded_low[2 * NUM_STAGE]) + '));\n')
         else:
             file_vhdl.write(
                 '\t\t\t\t\tdata_out \t\t\t\t<= std_logic_vector(combin' + str(NUM_STAGE) + '(channel_out));\n')
